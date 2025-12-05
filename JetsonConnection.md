@@ -30,3 +30,5 @@ Install uv with `curl -LsSf https://astral.sh/uv/install.sh | sh`
 
 When copying and overwriting use `rsync -avz --delete --ignore-times [DEST_FOLDER] magpie@192.168.55.1:~/abm-sync` or replace `abm-sync` with the dest folder, etc.
 Then enter the password.
+
+#TODO, figure out ros2 and get Mav DataHose running
