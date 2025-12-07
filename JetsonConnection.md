@@ -31,4 +31,33 @@ Install uv with `curl -LsSf https://astral.sh/uv/install.sh | sh`
 When copying and overwriting use `rsync -avz --delete --ignore-times [DEST_FOLDER] magpie@192.168.55.1:~/abm-sync` or replace `abm-sync` with the dest folder, etc.
 Then enter the password.
 
-#TODO, figure out ros2 and get Mav DataHose running
+# MavDataHose Python environment setup
+
+First sync the files over with rsync as above. Then ssh in and run:
+```
+# 1a. Navigate to your workspace root (or create one)
+mkdir -p ~/abm-sync/src
+cd ~/abm-sync/
+
+# 1b. Create a virtual environment using 'uv', linking system ROS packages
+uv venv --system-site-packages .venv
+
+# 1c. Activate the environment (the prompt should show '(.venv)')
+source .venv/bin/activate
+
+# 1d. Use 'uv pip' to install required non-ROS Python packages (e.g., pymavlink, rich)
+uv pip install pymavlink rich pyserial
+```
+
+# Force the build to use the active virtual environment's Python interpreter
+# This ensures the generated entry-point scripts link correctly
+```
+PYTHON=$(which python)
+$PYTHON -m colcon build --symlink-install --packages-select mav_data_hose
+```
+
+# Source the local workspace setup file and run the uniform pump node:
+```
+source install/setup.bash
+ros2 run mav_data_hose uniform_pump_node 
+```
